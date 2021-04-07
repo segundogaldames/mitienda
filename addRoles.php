@@ -10,21 +10,23 @@ if (isset($_POST['confirm']) && $_POST['confirm'] == 1 ) {
     
     if (!$nombre) {
         $msg = 'Debe ingresar el nombre del rol';
-    }
+    }else{
 
-    #preparamos la consulta antes de ser enviada a la base de datos
-    $res = $mbd->prepare("INSERT INTO roles VALUES(null, ?, now(), now())");
+        #preparamos la consulta antes de ser enviada a la base de datos
+        $res = $mbd->prepare("INSERT INTO roles VALUES(null, ?, now(), now())");
 
-    #sanitizamos el dato indicando cual es la posicion del ? en el orden en el que aparece en la consulta anterior
-    $res->bindParam(1, $nombre);
-    #Ejecutamos la consulta sanitizada
-    $res->execute();
-    #rescatamos el numero de filas insertadas en la tabla
-    $row = $res->rowCount();
+        #sanitizamos el dato indicando cual es la posicion del ? en el orden en el que aparece en la consulta anterior
+        $res->bindParam(1, $nombre);
+        #Ejecutamos la consulta sanitizada
+        $res->execute();
+        #rescatamos el numero de filas insertadas en la tabla
+        $row = $res->rowCount();
 
-    if($row){
-        $msg = 'ok';
-        header('Location: roles.php?m=' . $msg);
+        if($row){
+            $msg = 'ok';
+            header('Location: roles.php?m=' . $msg);
+        }
+
     }
 }
 
