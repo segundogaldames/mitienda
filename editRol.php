@@ -7,11 +7,23 @@ error_reporting(E_ALL);
 //llamada al archivo conexion para disponer de los datos de la base de datos
 require('class/conexion.php');
 
-//creamos la consulta a la tabla roles ordenados por nombre de manera ascendente para usar esos datos
-$res = $mbd->query("SELECT id, nombre FROM roles ORDER BY nombre");
-$roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles registrados
+//validar la variable GET id
+if (isset($_GET['id'])) {
+    
+    //recuperar el dato que viene en la variable id
+    $id = (int) $_GET['id']; //transforma el dato $_GET a entero
 
-//print_r($roles);
+    //print_r($id);exit;
+
+    //consultar si hay un rol con el id enviado por GET
+    $res = $mbd->prepare("SELECT id, nombre, created_at, updated_at FROM roles WHERE id = ?");
+    $res->bindParam(1, $id);
+    $res->execute();
+    $rol = $res->fetch();
+
+    //validar formulario
+
+}
 
 ?>
 
@@ -49,29 +61,21 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
                 <?php endif; ?>
                 
                 <!-- listar los roles que estan registrados -->
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Rol</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($roles as $rol): ?>
-                            <tr>
-                                <td> <?php echo $rol['id']; ?> </td>
-                                <td> 
-                                    <a href="verRol.php?id=<?php echo $rol['id']; ?>"> 
-                                        <?php echo $rol['nombre']; ?> 
-                                    </a> 
-                                </td>
-                            </tr>
-                            
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <!-- lista de roles -->
-                <a href="addRoles.php" class="btn btn-success">Nuevo Rol</a>
+                <?php if($rol): ?>
+                    <form action="" method="post">
+                        <div class="form-group mb-3">
+                            <label for="">Rol <span class="text-danger">*</span></label>
+                            <input type="text" name="nombre" value="<?php echo $rol['nombre']; ?>" class="form-control" placeholder="Ingrese el nombre del rol">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="hidden" name="confirm" value="1">
+                            <button type="submit" class="btn btn-primary">Editar</button>
+                            <a href="verRol.php?id=<?php echo $rol['id']; ?>" class="btn btn-link">Volver</a>
+                        </div>
+                    </form>
+                <?php else: ?>
+                    <p class="text-info">El dato solicitado no existe</p>
+                <?php endif; ?>
             </div>
             
         </section>
