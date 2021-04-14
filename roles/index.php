@@ -5,7 +5,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 //llamada al archivo conexion para disponer de los datos de la base de datos
-require('class/conexion.php');
+require('../class/conexion.php');
+require('../class/rutas.php');
 
 //creamos la consulta a la tabla roles ordenados por nombre de manera ascendente para usar esos datos
 $res = $mbd->query("SELECT id, nombre FROM roles ORDER BY nombre");
@@ -25,8 +26,8 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
     <!--Enlaces CDN de Bootstrap-->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script> -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/bootstrap.min.js"></script>
 </head>
 <body>
     
@@ -34,7 +35,7 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
         <!-- seccion de cabecera del sitio -->
         <header>
             <!-- navegador principal -->
-            <?php include('partials/menu.php'); ?>
+            <?php include('../partials/menu.php'); ?>
         </header>
 
         <!-- seccion de contenido principal -->
@@ -45,6 +46,18 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
                 <?php if(isset($_GET['m']) && $_GET['m'] == 'ok'): ?>
                     <div class="alert alert-success">
                         El rol se ha registrado correctamente
+                    </div>
+                <?php endif; ?>
+
+                <?php if(isset($_GET['e']) && $_GET['e'] == 'ok'): ?>
+                    <div class="alert alert-success">
+                        El rol se ha eliminado correctamente
+                    </div>
+                <?php endif; ?>
+
+                <?php if(isset($_GET['error']) && $_GET['error'] == 'error'): ?>
+                    <div class="alert alert-danger">
+                        El rol no se ha eliminado... intente nuevamente
                     </div>
                 <?php endif; ?>
                 
@@ -61,7 +74,7 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
                             <tr>
                                 <td> <?php echo $rol['id']; ?> </td>
                                 <td> 
-                                    <a href="verRol.php?id=<?php echo $rol['id']; ?>"> 
+                                    <a href="show.php?id=<?php echo $rol['id']; ?>"> 
                                         <?php echo $rol['nombre']; ?> 
                                     </a> 
                                 </td>
@@ -71,7 +84,7 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
                     </tbody>
                 </table>
                 <!-- lista de roles -->
-                <a href="addRoles.php" class="btn btn-success">Nuevo Rol</a>
+                <a href="add.php" class="btn btn-success">Nuevo Rol</a>
             </div>
             
         </section>

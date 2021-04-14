@@ -1,3 +1,6 @@
+<?php
+    require('class/rutas.php');
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
