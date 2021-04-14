@@ -22,7 +22,27 @@ if (isset($_GET['id'])) {
     $rol = $res->fetch();
 
     //validar formulario
+    if (isset($_POST['confirm']) && $_POST['confirm'] == 1 ) {
+        # guardamos en la variable nombre el dato nombre que viene del formulario...
+        $nombre = trim(strip_tags($_POST['nombre']));
 
+        if (!$nombre) {
+            $msg = 'Debe ingresar el nombre del rol';
+        }else{
+            //procedemos a actualizar el dato ingresado por el usuario en la tabla roles
+            $res = $mbd->prepare("UPDATE roles SET nombre = ?, update_at = now() WHERE id = ?");
+            $res->bindParam(1, $nombre);
+            $res->bindParam(2, $id);
+            $res->execute();
+
+            $row = $res->rowCount();//recuperamos el numero de filas afectadas por la consulta
+
+            if ($row) {
+                $msg = 'ok';
+                header('Location: verRol.php?id=' . $id . '&m=' . $msg);
+            }
+        }
+    }
 }
 
 ?>
@@ -53,11 +73,11 @@ if (isset($_GET['id'])) {
         <section>
             <div class="col-md-6 offset-md-3">
                 <h1>Roles</h1>
-                <!-- mensaje de registro de roles -->
-                <?php if(isset($_GET['m']) && $_GET['m'] == 'ok'): ?>
-                    <div class="alert alert-success">
-                        El rol se ha registrado correctamente
-                    </div>
+                <!-- mensaje de error de roles -->
+                <?php if(isset($msg)): ?>
+                    <p class="alert alert-danger">
+                        <?php echo $msg; ?>
+                    </p>
                 <?php endif; ?>
                 
                 <!-- listar los roles que estan registrados -->

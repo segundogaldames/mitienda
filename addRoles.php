@@ -25,7 +25,7 @@ if (isset($_POST['confirm']) && $_POST['confirm'] == 1 ) {
 
 
             #preparamos la consulta antes de ser enviada a la base de datos
-            $res = $mbd->prepare("INSERT INTO roles VALUES(null, ?, now(), now())");
+            $res = $mbd->prepare("INSERT INTO roles VALUES(null, ?, now(), now() )");
 
             #sanitizamos el dato indicando cual es la posicion del ? en el orden en el que aparece en la consulta anterior
             $res->bindParam(1, $nombre);
@@ -88,6 +88,7 @@ if (isset($_POST['confirm']) && $_POST['confirm'] == 1 ) {
                     <div class="form-group mb-3">
                         <input type="hidden" name="confirm" value="1">
                         <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="roles.php" class="btn btn-link">Volver</a>
                     </div>
                 </form>
             </div>
