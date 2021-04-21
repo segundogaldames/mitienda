@@ -22,10 +22,28 @@ if (isset($_GET['id'])) {
     $res->execute();
     $region = $res->fetch();
 
-    /* echo '<pre>';
-    print_r($region);exit;
-    echo '</pre>'; */
+    //validar formulario
+    if (isset($_POST['confirm']) && $_POST['confirm'] == 1 ) {
+        # guardamos en la variable nombre el dato nombre que viene del formulario...
+        $nombre = trim(strip_tags($_POST['nombre']));
 
+        if (!$nombre) {
+            $msg = 'Debe ingresar el nombre de la región';
+        }else{
+            //procedemos a actualizar el dato ingresado por el usuario en la tabla regiones
+            $res = $mbd->prepare("UPDATE regiones SET nombre = ?, updated_at = now() WHERE id = ?");
+            $res->bindParam(1, $nombre);
+            $res->bindParam(2, $id);
+            $res->execute();
+
+            $row = $res->rowCount();//recuperamos el numero de filas afectadas por la consulta
+
+            if ($row) {
+                $msg = 'ok';
+                header('Location: show.php?id=' . $id . '&m=' . $msg);
+            }
+        }
+    }
 }
 
 ?>
@@ -55,49 +73,27 @@ if (isset($_GET['id'])) {
         <!-- seccion de contenido principal -->
         <section>
             <div class="col-md-6 offset-md-3">
-                <h1>Regiones</h1>
-                <!-- mensaje de registro de roles -->
-                <?php if(isset($_GET['m']) && $_GET['m'] == 'ok'): ?>
-                    <div class="alert alert-success">
-                        La región se ha modificado correctamente
-                    </div>
+                <h1>Editar Región</h1>
+                <!-- mensaje de error de roles -->
+                <?php if(isset($msg)): ?>
+                    <p class="alert alert-danger">
+                        <?php echo $msg; ?>
+                    </p>
                 <?php endif; ?>
-             
+                
                 <!-- listar los roles que estan registrados -->
                 <?php if($region): ?>
-                    <table class="table table-hover">
-                        <tr>
-                            <th>Id:</th>
-                            <td><?php echo $region['id']; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Región:</th>
-                            <td><?php echo $region['nombre']; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Creado:</th>
-                            <td>
-                                <?php 
-                                    $fecha = new DateTime($region['created_at']);
-                                    echo $fecha->format('d-m-Y H:i:s'); 
-                                ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Actualizado:</th>
-                            <td>
-                                <?php 
-                                    $fecha = new DateTime($region['updated_at']);
-                                    echo $fecha->format('d-m-Y H:i:s'); 
-                                ?>
-                            </td>
-                        </tr>
-                    </table>
-                    <p>
-                        <a href="index.php" class="btn btn-link">Volver</a>
-                        <a href="edit.php?id=<?php echo $region['id'] ?>" class="btn btn-primary">Editar</a>
-                        <a href="../comunas/add.php?id=<?php echo $id; ?>" class="btn btn-success">Agregar Comuna</a>
-                    </p>
+                    <form action="" method="post">
+                        <div class="form-group mb-3">
+                            <label for="">Región <span class="text-danger">*</span></label>
+                            <input type="text" name="nombre" value="<?php echo $region['nombre']; ?>" class="form-control" placeholder="Ingrese el nombre de la región">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="hidden" name="confirm" value="1">
+                            <button type="submit" class="btn btn-primary">Editar</button>
+                            <a href="show.php?id=<?php echo $region['id']; ?>" class="btn btn-link">Volver</a>
+                        </div>
+                    </form>
                 <?php else: ?>
                     <p class="text-info">El dato solicitado no existe</p>
                 <?php endif; ?>
