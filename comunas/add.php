@@ -7,7 +7,42 @@ if (isset($_GET['id'])) {
    //guardamos este id en un variable
    $id_region = (int) $_GET['id'];
 
-   
+   //validamos el formulario si viene via POST
+   if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
+       
+        //guardamos y sanitizamos la variable nombre
+        $nombre = trim(strip_tags($_POST['nombre']));
+
+        if (!$nombre) {
+            $msg = 'Ingrese el nombre de la comuna';
+        }else{
+            //verificar que la comuna ingresada no exista
+            $res = $mbd->prepare("SELECT id FROM comunas WHERE nombre = ?");
+            $res->bindParam(1, $nombre);
+            $res->execute();
+
+            $comuna = $res->fetch();
+
+            if ($comuna) {
+                $msg = 'La comuna ingresada ya existe... intente con otra';
+            }else{
+
+                //guardamos los datos en la tabla comunas
+                $res = $mbd->prepare("INSERT INTO comunas VALUES(null, ?, ?, now(), now() )");
+                $res->bindParam(1, $nombre);
+                $res->bindParam(2, $id_region);
+                $res->execute();
+
+                //rescatar el numero de filas afectadas
+                $row = $res->rowCount();
+
+                if ($row) {
+                    $msg = 'ok';
+                    header('Location: index.php?m=' . $msg);
+                }
+            } 
+        }
+   }
 }
 
 
