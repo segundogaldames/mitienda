@@ -89,6 +89,10 @@ if (isset($_GET['id'])) {
                             </td>
                         </tr>
                     </table>
+                    <p>
+                        <a href="edit.php?id=<?php echo $id; ?>" class="btn btn-primary">Editar</a>
+                        <a href="index.php" class="btn btn-link">Volver</a>
+                    </p>
                 <?php else: ?>
                     <p class="text-info">El dato no existe</p>
                 <?php endif; ?>
