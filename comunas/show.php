@@ -8,13 +8,22 @@ error_reporting(E_ALL);
 require('../class/conexion.php');
 require('../class/rutas.php');
 
-//creamos la consulta a la tabla comunas ordenados por nombre de manera ascendente para usar esos datos
-$res = $mbd->query("SELECT c.id, c.nombre as comuna, c.region_id, r.nombre as region FROM comunas as c INNER JOIN regiones as r ON c.region_id = r.id ORDER BY comuna");
-$comunas = $res->fetchall(); //pido a PDO que disponibilice todos los roles registrados
+if (isset($_GET['id'])) {
+    
+    $id = (int) $_GET['id'];
 
-/* echo '<pre>';
-print_r($comunas);exit;
-echo '</pre>'; */
+    //creamos la consulta a la tabla comunas de acuerdo al id ingresado por el sistema
+    $res = $mbd->prepare("SELECT c.id, c.nombre as comuna, c.created_at, c.updated_at, r.nombre as region FROM comunas as c INNER JOIN regiones as r ON c.region_id = r.id WHERE c.id = ?");
+    $res->bindParam(1, $id);
+    $res->execute();
+    $comuna = $res->fetch(); //pido a PDO que disponibilice la comuna consultada por id
+
+    /* echo '<pre>';
+    print_r($comuna);exit;
+    echo '</pre>'; */
+}
+
+
 
 ?>
 
@@ -47,44 +56,42 @@ echo '</pre>'; */
                 <!-- mensaje de registro de roles -->
                 <?php if(isset($_GET['m']) && $_GET['m'] == 'ok'): ?>
                     <div class="alert alert-success">
-                        La comuna se ha registrado correctamente
-                    </div>
-                <?php endif; ?>
-
-                <?php if(isset($_GET['e']) && $_GET['e'] == 'ok'): ?>
-                    <div class="alert alert-success">
-                        La comuna se ha eliminado correctamente
-                    </div>
-                <?php endif; ?>
-
-                <?php if(isset($_GET['error']) && $_GET['error'] == 'error'): ?>
-                    <div class="alert alert-danger">
-                        La comuna no se ha eliminado... intente nuevamente
+                        La comuna se ha modificado correctamente
                     </div>
                 <?php endif; ?>
                 
-                <!-- listar los roles que estan registrados -->
-                <table class="table table-hover">
-                    <thead>
+                <?php if($comuna): ?>
+                    <table class="table table-hover">
                         <tr>
-                            <th>Comuna</th>
-                            <th>Región</th>
+                            <th>Comuna:</th>
+                            <td> <?php echo $comuna['comuna']; ?> </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($comunas as $comuna): ?>
-                            <tr>
-                                <td> 
-                                    <a href="show.php?id=<?php echo $comuna['id']; ?> ">
-                                        <?php echo $comuna['comuna']; ?> 
-                                    </a>
-                                </td>
-                                <td> <?php echo $comuna['region']; ?> </td>
-                            </tr>
-                            
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        <tr>
+                            <th>Región:</th>
+                            <td> <?php echo $comuna['region']; ?> </td>
+                        </tr>
+                        <tr>
+                            <th>Creado:</th>
+                            <td> 
+                                <?php
+                                    $created = new DateTime($comuna['created_at']);
+                                    echo $created->format('d-m-Y H:i:s'); 
+                                ?> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Actualizado:</th>
+                            <td> 
+                                <?php
+                                    $updated = new DateTime($comuna['updated_at']);
+                                    echo $updated->format('d-m-Y H:i:s'); 
+                                ?> 
+                            </td>
+                        </tr>
+                    </table>
+                <?php else: ?>
+                    <p class="text-info">El dato no existe</p>
+                <?php endif; ?>
             </div>
             
         </section>
