@@ -125,6 +125,7 @@ if (isset($_GET['id'])) {
                     <p>
                         <a href="index.php" class="btn btn-link">Volver</a>
                         <a href="edit.php?id=<?php echo $id; ?>" class="btn btn-primary">Editar</a>
+                        <a href="../usuarios/add.php?persona=<?php echo $id; ?>" class="btn btn-success">Agregar Password</a>
                     </p>
                 <?php else: ?>
                     <p class="text-info">El dato solicitado no existe</p>
