@@ -4,6 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+session_start();
+//print_r($_SESSION);exit;
+
 //llamada al archivo conexion para disponer de los datos de la base de datos
 require('../class/conexion.php');
 require('../class/rutas.php');
@@ -21,6 +24,13 @@ if (isset($_GET['id'])) {
     $res->bindParam(1, $id);
     $res->execute();
     $persona = $res->fetch();
+
+    //preguntar si la parsona tiene un usuario
+    $res = $mbd->prepare("SELECT id FROM usuarios WHERE persona_id = ?");
+    $res->bindParam(1, $id);
+    $res->execute();
+
+    $usuario = $res->fetch();
 
     /* echo '<pre>';
     print_r($persona);exit;
@@ -62,6 +72,8 @@ if (isset($_GET['id'])) {
                         La persona se ha modificado correctamente
                     </div>
                 <?php endif; ?>
+
+                <?php include('../partials/mensajes.php'); ?>
              
                 <!-- listar los roles que estan registrados -->
                 <?php if($persona): ?>
@@ -125,7 +137,12 @@ if (isset($_GET['id'])) {
                     <p>
                         <a href="index.php" class="btn btn-link">Volver</a>
                         <a href="edit.php?id=<?php echo $id; ?>" class="btn btn-primary">Editar</a>
-                        <a href="../usuarios/add.php?persona=<?php echo $id; ?>" class="btn btn-success">Agregar Password</a>
+
+                        <?php if(!$usuario): ?>
+                            <a href="../usuarios/add.php?persona=<?php echo $id; ?>" class="btn btn-success">Agregar Password</a>
+                        <?php else: ?>
+                            <a href="../usuarios/editPassword.php?persona=<?php echo $id; ?>" class="btn btn-warning">Modificar Password</a>
+                        <?php endif; ?>
                     </p>
                 <?php else: ?>
                     <p class="text-info">El dato solicitado no existe</p>
