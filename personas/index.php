@@ -76,8 +76,10 @@ echo '</pre>'; */
                     <tbody>
                         <?php foreach($personas as $persona): ?>
                             <tr>
-                                <td> 
-                                    <?php echo $persona['nombre']; ?> 
+                                <td>
+                                    <a href="show.php?id=<?php echo $persona['id']; ?>">
+                                        <?php echo $persona['nombre']; ?> 
+                                    </a>   
                                 </td>
                                 <td> 
                                     <?php echo $persona['email']; ?>
