@@ -40,7 +40,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="false">Otro</a>
+                    <a class="nav-link" href="<?php echo USUARIOS . 'login.php' ?>" tabindex="-1" aria-disabled="false">LogIn</a>
                 </li>
             </ul>
             <!-- formulario del buscador -->

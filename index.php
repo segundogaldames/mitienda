@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require('class/rutas.php');
 ?>
 <!DOCTYPE html>
@@ -25,7 +26,11 @@
 
         <!-- seccion de contenido principal -->
         <section>
-            <h1>Título Mi Tienda</h1>
+            
+            <?php if(isset($_SESSION['autenticado'])): ?>
+                <h4>Bienvenid@ <?php echo $_SESSION['usuario_nombre']; ?></h4>
+            <?php endif; ?>
+
         </section>
 
         <!-- pie de pagina -->
