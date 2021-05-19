@@ -14,37 +14,33 @@ if (isset($_GET['id'])) {
     $id = (int) $_GET['id']; 
 
     //validamos que la persona exista en la tabla personas
-    $res = $mbd->prepare("SELECT u.id, u.activo, p.nombre FROM usuarios as u INNER JOIN personas as p ON u.persona_id = p.id WHERE id = ?");
+    $res = $mbd->prepare("SELECT u.id, u.activo, u.persona_id, p.nombre FROM usuarios as u INNER JOIN personas as p ON u.persona_id = p.id WHERE u.id = ?");
     $res->bindParam(1, $id);
     $res->execute();
 
     $usuario = $res->fetch();
 
+    //print_r($usuario);exit;
+
     if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
         
-        $clave = trim(strip_tags($_POST['clave']));
-        $reclave = trim(strip_tags($_POST['reclave']));
+        $activo = (int) $_POST['activo'];
 
-        if (!$clave || strlen($clave) < 8) {
-            $msg = 'Ingrese un password de al menos ocho caracteres';
-        }elseif($reclave != $clave){
-            $msg = 'El password no coincide';
+        if ($activo <= 0) {
+            $msg = 'Seleccione un estado';
         }else{
-            //encriptacion de password
-            $clave = sha1($clave);
-            $id = $usuario['id'];
-            //registramos al usuario con el id de persona enviado por GET
+            //actualizamos al usuario con el id enviado por GET
             //activo => 1 e inactivo => 2
-            $res = $mbd->prepare("UPDATE usuarios SET clave = ?, updated_at = now() WHERE id = ?");
-            $res->bindParam(1, $clave);
+            $res = $mbd->prepare("UPDATE usuarios SET activo = ?, updated_at = now() WHERE id = ?");
+            $res->bindParam(1, $activo);
             $res->bindParam(2, $id);
             $res->execute();
 
             $row = $res->rowCount();
 
             if($row){
-                $_SESSION['success'] = 'El password se ha modificado correctamente';
-                header('Location: ../personas/show.php?id=' . $id_persona );
+                $_SESSION['success'] = 'El estado se ha modificado correctamente';
+                header('Location: ../personas/show.php?id=' . $usuario['persona_id'] );
             }
 
         }
@@ -110,7 +106,7 @@ if (isset($_GET['id'])) {
                         <div class="form-group mb-3">
                             <input type="hidden" name="confirm" value="1">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <a href="../personas/show.php?id=<?php echo $id_persona; ?>" class="btn btn-link">Volver</a>
+                            <a href="../personas/show.php?id=<?php echo $usuario['persona_id']; ?>" class="btn btn-link">Volver</a>
                         </div>
                     </form>
                 <?php else: ?>
