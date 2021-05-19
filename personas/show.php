@@ -26,7 +26,7 @@ if (isset($_GET['id'])) {
     $persona = $res->fetch();
 
     //preguntar si la parsona tiene un usuario
-    $res = $mbd->prepare("SELECT id FROM usuarios WHERE persona_id = ?");
+    $res = $mbd->prepare("SELECT id, activo FROM usuarios WHERE persona_id = ?");
     $res->bindParam(1, $id);
     $res->execute();
 
@@ -114,6 +114,20 @@ if (isset($_GET['id'])) {
                         <tr>
                             <th>Rol:</th>
                             <td><?php echo $persona['rol']; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Estado:</th>
+                            <td>
+                                <?php if(!empty($usuario) && $usuario['activo'] == 1): ?>
+                                    Activo
+                                <?php else: ?>
+                                    Inactivo
+                                <?php endif; ?>
+                                
+                                <?php if($usuario): ?>
+                                    | <a href="../usuarios/edit.php?id=<?php echo $usuario['id'] ?>">Modificar</a>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                         <tr>
                             <th>Creado:</th>
