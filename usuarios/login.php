@@ -45,6 +45,8 @@ if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
 
 ?>
 
+<?php if(!isset($_SESSION['autenticado'])): ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -104,3 +106,10 @@ if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
     </div>
 </body>
 </html>
+<?php else: ?>
+    <script>
+        alert('Debe cerrar sesión para volver a ingresar');
+        window.location = "<?php echo BASE_URL; ?>";
+    </script>
+
+<?php endif; ?>
