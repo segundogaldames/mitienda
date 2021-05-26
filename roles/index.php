@@ -4,6 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+session_start();
+
 //llamada al archivo conexion para disponer de los datos de la base de datos
 require('../class/conexion.php');
 require('../class/rutas.php');
@@ -15,6 +17,7 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
 //print_r($roles);
 
 ?>
+<?php if(isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] == 3): ?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -43,11 +46,7 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
             <div class="col-md-6 offset-md-3">
                 <h1>Roles</h1>
                 <!-- mensaje de registro de roles -->
-                <?php if(isset($_GET['m']) && $_GET['m'] == 'ok'): ?>
-                    <div class="alert alert-success">
-                        El rol se ha registrado correctamente
-                    </div>
-                <?php endif; ?>
+                <?php include('../partials/mensajes.php'); ?>
 
                 <?php if(isset($_GET['e']) && $_GET['e'] == 'ok'): ?>
                     <div class="alert alert-success">
@@ -96,3 +95,9 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
     </div>
 </body>
 </html>
+<?php else: ?>
+    <script>
+        alert('Acceso indebido');
+        window.location = "<?php echo BASE_URL; ?>";
+    </script>
+<?php endif; ?>

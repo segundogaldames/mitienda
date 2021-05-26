@@ -39,9 +39,15 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo USUARIOS . 'login.php' ?>" tabindex="-1" aria-disabled="false">LogIn</a>
-                </li>
+                <?php if(!isset($_SESSION['autenticado'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo USUARIOS . 'login.php' ?>" tabindex="-1" aria-disabled="false">LogIn</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo USUARIOS . 'logout.php' ?>" tabindex="-1" aria-disabled="false">LogOut</a>
+                    </li>
+                <?php endif; ?>
             </ul>
             <!-- formulario del buscador -->
             <form class="d-flex">

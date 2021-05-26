@@ -22,7 +22,7 @@ if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
         $clave = sha1($clave);
 
         //consultamos por el email y password ingresados
-        $res = $mbd->prepare("SELECT u.id, p.nombre, r.id as rol FROM usuarios as u INNER JOIN personas as p ON u.persona_id = p.id INNER JOIN roles as r ON p.rol_id = r.id WHERE p.email = ? AND u.clave = ? AND u.activo == 1");
+        $res = $mbd->prepare("SELECT u.id, p.nombre, r.id as rol FROM usuarios as u INNER JOIN personas as p ON u.persona_id = p.id INNER JOIN roles as r ON p.rol_id = r.id WHERE p.email = ? AND u.clave = ? AND u.activo = 1");
         $res->bindParam(1, $email);
         $res->bindParam(2, $clave);
         $res->execute();
