@@ -4,6 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+session_start();
+
 //llamada al archivo conexion para disponer de los datos de la base de datos
 require('../class/conexion.php');
 require('../class/rutas.php');
@@ -17,6 +19,8 @@ print_r($regiones);exit;
 echo '</pre>'; */
 
 ?>
+
+<?php if(isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] != 1): ?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -45,23 +49,7 @@ echo '</pre>'; */
             <div class="col-md-6 offset-md-3">
                 <h1>Regiones</h1>
                 <!-- mensaje de registro de roles -->
-                <?php if(isset($_GET['m']) && $_GET['m'] == 'ok'): ?>
-                    <div class="alert alert-success">
-                        La región se ha registrado correctamente
-                    </div>
-                <?php endif; ?>
-
-                <?php if(isset($_GET['e']) && $_GET['e'] == 'ok'): ?>
-                    <div class="alert alert-success">
-                        La regiones ha eliminado correctamente
-                    </div>
-                <?php endif; ?>
-
-                <?php if(isset($_GET['error']) && $_GET['error'] == 'error'): ?>
-                    <div class="alert alert-danger">
-                        La región no se ha eliminado... intente nuevamente
-                    </div>
-                <?php endif; ?>
+                <?php include('../partials/mensajes.php'); ?>
                 
                 <!-- listar los roles que estan registrados -->
                 <table class="table table-hover">
@@ -86,7 +74,9 @@ echo '</pre>'; */
                     </tbody>
                 </table>
                 <!-- lista de roles -->
-                <a href="add.php" class="btn btn-success">Nueva Región</a>
+                <?php if($_SESSION['usuario_rol'] == 3): ?>
+                    <a href="add.php" class="btn btn-success">Nueva Región</a>
+                <?php endif; ?>
             </div>
             
         </section>
@@ -98,3 +88,10 @@ echo '</pre>'; */
     </div>
 </body>
 </html>
+<?php else: ?>
+    <script>
+        alert('Acceso indebido');
+        window.location = "<?php echo BASE_URL; ?>";
+    </script>
+
+<?php endif; ?>

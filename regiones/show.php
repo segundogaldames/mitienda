@@ -4,6 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+session_start();
+
 //llamada al archivo conexion para disponer de los datos de la base de datos
 require('../class/conexion.php');
 require('../class/rutas.php');
@@ -29,6 +31,8 @@ if (isset($_GET['id'])) {
 }
 
 ?>
+
+<?php if(isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] != 1): ?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -57,11 +61,7 @@ if (isset($_GET['id'])) {
             <div class="col-md-6 offset-md-3">
                 <h1>Regiones</h1>
                 <!-- mensaje de registro de roles -->
-                <?php if(isset($_GET['m']) && $_GET['m'] == 'ok'): ?>
-                    <div class="alert alert-success">
-                        La región se ha modificado correctamente
-                    </div>
-                <?php endif; ?>
+               <?php include('../partials/mensajes.php'); ?>
              
                 <!-- listar los roles que estan registrados -->
                 <?php if($region): ?>
@@ -95,8 +95,10 @@ if (isset($_GET['id'])) {
                     </table>
                     <p>
                         <a href="index.php" class="btn btn-link">Volver</a>
-                        <a href="edit.php?id=<?php echo $region['id'] ?>" class="btn btn-primary">Editar</a>
-                        <a href="../comunas/add.php?id=<?php echo $id; ?>" class="btn btn-success">Agregar Comuna</a>
+                        <?php if($_SESSION['usuario_rol'] == 3): ?>
+                            <a href="edit.php?id=<?php echo $region['id'] ?>" class="btn btn-primary">Editar</a>
+                            <a href="../comunas/add.php?id=<?php echo $id; ?>" class="btn btn-success">Agregar Comuna</a>
+                        <?php endif; ?>
                     </p>
                 <?php else: ?>
                     <p class="text-info">El dato solicitado no existe</p>
@@ -112,3 +114,10 @@ if (isset($_GET['id'])) {
     </div>
 </body>
 </html>
+<?php else: ?>
+    <script>
+        alert('Acceso indebido');
+        window.location = "<?php echo BASE_URL; ?>";
+    </script>
+
+<?php endif; ?>
