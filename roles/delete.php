@@ -2,31 +2,52 @@
 require('../class/conexion.php');
 require('../class/rutas.php');
 
-if (isset($_GET['id'])) {
-   
-    $id = (int) $_GET['id']; //guardamos el id que viene por GET en la variable id, obligandola a que sea numero entero
+session_start();
 
-    //consultar a la tabla roles si existe un registro (fila) asociado al id recibido
-    $res = $mbd->prepare("SELECT id FROM roles WHERE id = ?");
-    $res->bindParam(1, $id); //sanitizamos la variable id antes de ejecutarse la consulta
-    $res->execute(); //ejecutamos la consulta
-    $rol = $res->fetch();//recuperamos la fila si es que existe
+if (isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] == 3) {
+    # code...
 
-    //validamos la existencia del rol que se desea eliminar
-    if($rol){
-        //procedemos a eliminar el rol solicitado
-        $res = $mbd->prepare("DELETE FROM roles WHERE id = ?");
-        $res->bindParam(1, $id);//sanitizamos la variable id
+
+    if (isset($_GET['id'])) {
+    
+        $id = (int) $_GET['id']; //guardamos el id que viene por GET en la variable id, obligandola a que sea numero entero
+
+        //consultar a la tabla roles si existe un registro (fila) asociado al id recibido
+        $res = $mbd->prepare("SELECT id FROM roles WHERE id = ?");
+        $res->bindParam(1, $id); //sanitizamos la variable id antes de ejecutarse la consulta
         $res->execute(); //ejecutamos la consulta
+        $rol = $res->fetch();//recuperamos la fila si es que existe
 
-        $row = $res->rowCount(); //recuperamos el numero de filas afectados (=1)
+        //validamos la existencia del rol que se desea eliminar
+        if($rol){
+            //verificamos que el rol no tenga una persona asociada
+            $res = $mbd->prepare("SELECT id FROM personas WHERE rol_id = ?");
+            $res->bindParam(1, $id);
+            $res->execute();
 
-        if($row){
-            $msg = 'ok';
-            header('Location: index.php?e=' . $msg);
-        }else{
-            $error = 'error';
-            header('Location: index.php?error=' . $error);
+            $persona = $res->fetch();
+
+            if (!$persona) {
+                //procedemos a eliminar el rol solicitado
+                $res = $mbd->prepare("DELETE FROM roles WHERE id = ?");
+                $res->bindParam(1, $id);//sanitizamos la variable id
+                $res->execute(); //ejecutamos la consulta
+
+                $row = $res->rowCount(); //recuperamos el numero de filas afectados (=1)
+
+                if($row){
+                    $_SESSION['success'] = 'El rol se ha eliminado correctamente';
+                    header('Location: index.php');
+                }
+            }else{
+                $_SESSION['danger'] = 'El rol no se ha podido eliminar';
+                header('Location: index.php');
+            }
         }
     }
+}else {
+    echo "<script> 
+       alert('Acceso indebido');
+       window.location = 'http://localhost:8888/miTienda/';        
+    </script>";
 }

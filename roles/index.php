@@ -47,18 +47,6 @@ $roles = $res->fetchall(); //pido a PDO que disponibilice todos los roles regist
                 <h1>Roles</h1>
                 <!-- mensaje de registro de roles -->
                 <?php include('../partials/mensajes.php'); ?>
-
-                <?php if(isset($_GET['e']) && $_GET['e'] == 'ok'): ?>
-                    <div class="alert alert-success">
-                        El rol se ha eliminado correctamente
-                    </div>
-                <?php endif; ?>
-
-                <?php if(isset($_GET['error']) && $_GET['error'] == 'error'): ?>
-                    <div class="alert alert-danger">
-                        El rol no se ha eliminado... intente nuevamente
-                    </div>
-                <?php endif; ?>
                 
                 <!-- listar los roles que estan registrados -->
                 <table class="table table-hover">
