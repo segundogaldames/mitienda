@@ -47,7 +47,7 @@ echo '</pre>'; */
         <!-- seccion de contenido principal -->
         <section>
             <div class="col-md-6 offset-md-3">
-                <h1>Regiones</h1>
+                <h1 class="text-center">Regiones</h1>
                 <!-- mensaje de registro de roles -->
                 <?php include('../partials/mensajes.php'); ?>
                 

@@ -1,4 +1,5 @@
 <?php
+    //echo uniqid();exit;
     //visualizar errores en php en tiempo de ejecucion
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);

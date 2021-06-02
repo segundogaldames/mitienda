@@ -29,6 +29,16 @@
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
+                            <a class="dropdown-item" href="<?php echo MARCAS; ?>">Marcas</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo PRODUCTOS; ?>">Productos</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo PRODUCTO_TIPOS; ?>">Tipo Productos</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
                             <a class="dropdown-item" href="<?php echo PERSONAS; ?>">Personas</a>
                         </li>
                         <li>

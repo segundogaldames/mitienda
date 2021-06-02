@@ -8,6 +8,7 @@ session_start();
 
 require('../class/conexion.php');
 require('../class/rutas.php');
+require('../class/config.php');
 
 if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
     
@@ -19,7 +20,7 @@ if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
     }elseif(!$clave){
         $msg = 'Ingrese su password';
     }else{
-        $clave = sha1($clave);
+        $clave = HASH . sha1($clave);
 
         //consultamos por el email y password ingresados
         $res = $mbd->prepare("SELECT u.id, p.nombre, r.id as rol FROM usuarios as u INNER JOIN personas as p ON u.persona_id = p.id INNER JOIN roles as r ON p.rol_id = r.id WHERE p.email = ? AND u.clave = ? AND u.activo = 1");
