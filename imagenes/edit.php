@@ -84,6 +84,12 @@
         <div class="col-md-6 offset-md-3">
             <h2 class="text-center mt-3 text-primary">Editar Imagen</h2>
 
+            <?php if(isset($msg)): ?>
+                <p class="alert alert-danger">
+                    <?php echo $msg; ?>
+                </p>
+            <?php endif; ?>
+
             <!-- validar que el rol existe     -->
             <?php if($imagen): ?>
                 <form action="" method="post">

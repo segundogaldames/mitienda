@@ -77,6 +77,7 @@
                             <?php else: ?>
                                 No
                             <?php endif; ?>
+                            <a href="editPortada.php?id=<?php echo $id; ?>" class="btn btn-link btn-sm">Cambiar</a>
                         </td>
                     </tr>
                     <tr>
