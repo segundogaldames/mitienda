@@ -7,7 +7,14 @@
 
     session_start();
     
+    require('class/conexion.php');
     require('class/rutas.php');
+
+    //lista de productos con sus imagenes con productos activos e imagenes activas y en portada
+    $res = $mbd->query("SELECT i.imagen, p.id, p.nombre, p.precio, m.nombre as marca, tp.nombre as tipo FROM imagenes i INNER JOIN productos p ON i.producto_id = p.id INNER JOIN marcas m ON p.marca_id = m.id INNER JOIN producto_tipos tp ON p.producto_tipo_id = tp.id WHERE i.activo = 1 AND i.portada = 1 AND p.activo = 1 ORDER BY p.precio");
+    $productos = $res->fetchall();
+
+    //print_r($productos);exit;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -37,6 +44,27 @@
             <?php if(isset($_SESSION['autenticado'])): ?>
                 <h4>Bienvenid@ <?php echo $_SESSION['usuario_nombre']; ?></h4>
             <?php endif; ?>
+
+            <div class="row">
+                <?php foreach($productos as $producto): ?>
+                    <div class="col-md-2 text-center m-2">
+                        <p class="h6 text-primary">
+                            <?php echo $producto['nombre']; ?>
+                        </p>
+                        <img src="<?php echo PRODUCTOS . 'img/' . $producto['imagen']; ?>" alt="" width="190" height="120">
+                        <p class="h4 text-primary mt-2">
+                            $ <?php echo number_format($producto['precio'],0,',','.'); ?>
+                        </p>
+                        <p class="h5 text-primary">
+                            <?php echo $producto['marca']; ?>
+                        </p>
+                        <p class="h5 text-primary">
+                            <?php echo $producto['tipo']; ?>
+                        </p>
+                    </div>
+                    
+                <?php endforeach; ?>
+            </div>
 
         </section>
 

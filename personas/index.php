@@ -11,7 +11,7 @@ require('../class/conexion.php');
 require('../class/rutas.php');
 
 //creamos la consulta a la tabla roles ordenados por nombre de manera ascendente para usar esos datos
-$res = $mbd->query("SELECT p.id, p.nombre, p.email, r.nombre as rol, c.nombre as comuna FROM personas as p INNER JOIN roles as r ON p.rol_id = r.id INNER JOIN comunas as c ON p.comuna_id = c.id");
+$res = $mbd->query("SELECT p.id, p.nombre, p.email, r.nombre as rol, c.nombre as comuna FROM personas as p INNER JOIN roles as r ON p.rol_id = r.id INNER JOIN comunas as c ON p.comuna_id = c.id ORDER BY nombre");
 $personas = $res->fetchall(); //pido a PDO que disponibilice todos los roles registrados
 
 /* echo '<pre>';
