@@ -29,6 +29,9 @@
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
+                            <a class="dropdown-item" href="<?php echo IMAGENES; ?>">Imágenes</a>
+                        </li>
+                        <li>
                             <a class="dropdown-item" href="<?php echo MARCAS; ?>">Marcas</a>
                         </li>
                         <li>

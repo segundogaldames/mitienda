@@ -97,6 +97,7 @@
     }
 
 ?>
+<?php if (isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] == 3):?>
 <!-- aqui comienza el codigo del cliente -->
 <!DOCTYPE html>
 <html lang="es">
@@ -162,3 +163,9 @@
     
 </body>
 </html>
+<?php else: ?>
+    <script>
+        alert('Acceso indebido');
+        window.location="<?php echo BASE_URL; ?>";
+    </script>
+<?php endif; ?>

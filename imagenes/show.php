@@ -25,6 +25,7 @@
     }
 
 ?>
+<?php if(isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] != 1): ?>
 <!-- aqui comienza el codigo del cliente -->
 <!DOCTYPE html>
 <html lang="es">
@@ -115,12 +116,15 @@
                 </table>
                 <p>
                     <a href="index.php" class="btn btn-link">Volver</a>
-                    <a href="edit.php?id=<?php echo $imagen['id']; ?>" class="btn btn-primary">Editar</a>
-                    <form action="delete.php" method="post">
-                        <input type="hidden" name="id" value="<?php echo $id; ?>">
-                        <input type="hidden" name="confirm" value="1">
-                        <button type="submit" class="btn-warning">Eliminar</button>
-                    </form>
+                    <?php if($_SESSION['usuario_rol'] == 3): ?>
+                        <a href="edit.php?id=<?php echo $imagen['id']; ?>" class="btn btn-primary">Editar</a>
+                        
+                        <form action="delete.php" method="post">
+                            <input type="hidden" name="id" value="<?php echo $id; ?>">
+                            <input type="hidden" name="confirm" value="1">
+                            <button type="submit" class="btn-warning">Eliminar</button>
+                        </form>
+                    <?php endif; ?>
                 </p>
             <?php else: ?>
                 
@@ -134,3 +138,9 @@
     
 </body>
 </html>
+<?php else: ?>
+    <script>
+        alert('Acceso indebido');
+        window.location="../";
+    </script>
+<?php endif; ?>

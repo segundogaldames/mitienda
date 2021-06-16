@@ -17,6 +17,7 @@
     //print_r($marcas);
 
 ?>
+<?php if(isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] != 1): ?>
 <!-- aqui comienza el codigo del cliente -->
 <!DOCTYPE html>
 <html lang="es">
@@ -82,11 +83,18 @@
                     
                 <?php endforeach; ?>
             </div>
-
-            <a href="add.php" class="btn btn-primary">Nueva Imagen</a>
+            <?php if($_SESSION['usuario_rol'] == 3): ?>                                
+                <a href="add.php" class="btn btn-primary">Nueva Imagen</a>
+            <?php endif; ?>
         </div>
         
     </div>
     
 </body>
 </html>
+<?php else: ?>
+    <script>
+        alert('Acceso indebido');
+        window.location="../index.php";
+    </script>
+<?php endif; ?>
