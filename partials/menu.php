@@ -30,6 +30,9 @@
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
+                                <a class="dropdown-item" href="<?php echo ATRIBUTOS; ?>">Atributos</a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item" href="<?php echo IMAGENES; ?>">Imágenes</a>
                             </li>
                             <li>
@@ -47,9 +50,6 @@
                             </li>
                             <li>
                                 <a class="dropdown-item" href="<?php echo ROLES; ?>">Roles</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Usuarios</a>
                             </li>
                         </ul>
                     </li>
