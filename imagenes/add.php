@@ -61,7 +61,7 @@
                     if (move_uploaded_file($_FILES['imagen']['tmp_name'], $img_subida)) {
                         //consultar si hay una imagen del producto seleccionado que sea portada
                         $res = $mbd->prepare("SELECT id FROM imagenes WHERE producto_id = ? AND portada = 1");
-                        $res->bindParam(1, $producto);
+                        $res->bindParam(1, $id_producto);
                         $res->execute();
     
                         $img_portada = $res->fetch();
@@ -98,10 +98,6 @@
             }
         }
     }
-
-
-    
-
 ?>
 <?php if (isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] == 3):?>
 <!-- aqui comienza el codigo del cliente -->

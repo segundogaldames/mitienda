@@ -54,7 +54,7 @@
             }else{
 
                 //generamos una consulta con opciones de sanitizacion de datos
-                $res = $mbd->prepare("INSERT INTO productos VALUES(null,?, ?, ?, 1, ?, ?, now(),now() )");
+                $res = $mbd->prepare("INSERT INTO productos VALUES(null,?, ?, ?, 2, ?, ?, now(),now() )");
                 //validamos por cada signo de ? el dato que intentamos enviar a la base de datos
                 $res->bindParam(1, $sku);
                 $res->bindParam(2, $nombre);
