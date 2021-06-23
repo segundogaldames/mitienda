@@ -153,8 +153,8 @@
                         <td><?php echo $atributo['nombre']; ?></td>
                         <td><?php echo $atributo['valor']; ?></td>
                         <td>
-                            <a href="#" class="btn btn-primary btn-sm">Editar</a>
-                            <a href="#" class="btn btn-warning btn-sm">Eliminar</a>
+                            <a href="<?php echo ATRIBUTO_PRODUCTO . 'edit.php?id=' . $atributo['id']; ?>" class="btn btn-primary btn-sm">Editar</a>
+                            <a href="<?php echo ATRIBUTO_PRODUCTO . 'delete.php?id=' . $atributo['id']; ?>" class="btn btn-warning btn-sm">Eliminar</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
