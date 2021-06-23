@@ -15,7 +15,7 @@
         
         $id = (int) $_GET['id']; //parsear la variable id a numero entero
 
-        //preguntamos si existe el id enviado via GET en la tabla regiones
+        //preguntamos si existe el id enviado via GET en la tabla productos
         $res = $mbd->prepare("SELECT p.id, p.sku, p.nombre, p.precio, p.activo, p.created_at, p.updated_at, m.nombre as marca, tp.nombre as tipo FROM productos p INNER JOIN marcas m ON p.marca_id = m.id INNER JOIN producto_tipos tp ON p.producto_tipo_id = tp.id WHERE p.id = ?");
         $res->bindParam(1, $id);
         $res->execute();
@@ -141,29 +141,24 @@
            
         </div>
         <div class="col-md-6 offset-md-3">
-            <h4>Atributos de <?php echo $producto['nombre'] ?></h4>
-            <?php if(count($atributos)): ?>
-                <table class="table table-hover">
+            <h4 class="text-center mt-3 text-primary">Atributos de <?php echo $producto['nombre']; ?></h4>
+            <table class="table table-hover">
+                <tr>
+                    <th>Atributo</th>
+                    <th>Valor</th>
+                    <th></th>
+                </tr>
+                <?php foreach($atributos as $atributo): ?>
                     <tr>
-                        <th>Atributo</th>
-                        <th>Valor</th>
-                        <th></th>
+                        <td><?php echo $atributo['nombre']; ?></td>
+                        <td><?php echo $atributo['valor']; ?></td>
+                        <td>
+                            <a href="#" class="btn btn-primary btn-sm">Editar</a>
+                            <a href="#" class="btn btn-warning btn-sm">Eliminar</a>
+                        </td>
                     </tr>
-                    <?php foreach($atributos as $atributo): ?>
-                        <tr>
-                            <td><?php echo $atributo['nombre']; ?></td>
-                            <td><?php echo $atributo['valor']; ?></td>
-                            <td>
-                                <a href="../atributo_producto/edit.php?id=<?php echo $atributo['id']; ?>" class="btn btn-warning btn-sm">Modificar</a>
-                                <a href="../atributo_producto/delete.php?id=<?php echo $atributo['id']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-
-                </table>
-            <?php else: ?>
-                <p class="text-info">No hay atributos asociados</p>
-            <?php endif; ?>
+                <?php endforeach; ?>
+            </table>
         </div>
     </div>
     
