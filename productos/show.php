@@ -98,7 +98,7 @@
                         <td>
                             <?php if(count($imagenes)): ?>
                                 <a href="showImages.php?id_producto=<?php echo $id; ?>" title="Ver Imágenes">
-                                    <?php echo count($imagenes); ?> imágenes
+                                    <?php echo count($imagenes); ?> imagen(es)
                                 </a>
                                 
                             <?php else: ?>

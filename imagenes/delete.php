@@ -9,7 +9,7 @@ if (isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] == 3) {
         $id = (int) $_POST['id'];
     
         //verificar si hay una imagen con el id recibido via post
-        $res = $mbd->prepare("SELECT id FROM imagenes WHERE id = ?");
+        $res = $mbd->prepare("SELECT id, producto_id FROM imagenes WHERE id = ?");
         $res->bindParam(1, $id);
         $res->execute();
     
@@ -25,7 +25,7 @@ if (isset($_SESSION['autenticado']) && $_SESSION['usuario_rol'] == 3) {
     
             if($row){
                 $_SESSION['success'] = 'La imagen se ha eliminado correctamente';
-                header('Location: index.php');
+                header('Location: ../productos/showImages.php?id_producto=' . $imagen['producto_id']);
             }
         }else{
             $_SESSION['danger'] = 'La imagen no se ha podido eliminar... intente nuevamente';

@@ -40,10 +40,6 @@
 
         <!-- seccion de contenido principal -->
         <section>
-            
-            <?php if(isset($_SESSION['autenticado'])): ?>
-                <h4>Bienvenid@ <?php echo $_SESSION['usuario_nombre']; ?></h4>
-            <?php endif; ?>
 
             <div class="row">
                 <?php foreach($productos as $producto): ?>
