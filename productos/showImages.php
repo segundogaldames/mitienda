@@ -16,10 +16,17 @@
         $id_producto = (int) $_GET['id_producto']; //parsear la variable id a numero entero
 
         //preguntamos si existe el id enviado via GET en la tabla regiones
-        $res = $mbd->prepare("SELECT id, titulo, imagen, activo, portada, p.nombre FROM imagenes i INNER JOIN productos p ON i.producto_id = p.id WHERE producto_id = ?");
+        $res = $mbd->prepare("SELECT i.id, i.titulo, i.imagen, i.activo, i.portada, p.nombre FROM imagenes i INNER JOIN productos p ON i.producto_id = p.id WHERE producto_id = ?");
         $res->bindParam(1, $id_producto);
         $res->execute();
         $imagenes = $res->fetchall();
+
+        //listar el producto asociada a la variable id_producto
+        $res = $mbd->prepare("SELECT id, nombre FROM productos WHERE id = ?");
+        $res->bindParam(1, $id_producto);
+        $res->execute();
+
+        $producto = $res->fetch();
 
         //print_r($region);exit;
     }
@@ -44,7 +51,12 @@
     </header>
     <div class="container">
         <div class="col-md-12">
-            <h2 class="text-center mt-3 text-primary">Imagenes</h2>
+            <h2 class="text-center mt-3 text-primary">
+                Imagenes de 
+                <a href="../productos/show.php?id=<?php echo $producto['id']; ?>">
+                    <?php echo $producto['nombre']; ?>
+                </a>
+            </h2>
             <!-- generacion de mensaje de exito -->
             <?php include('../partials/mensajes.php'); ?>
 
