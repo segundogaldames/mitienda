@@ -16,7 +16,7 @@
         $id = (int) $_GET['id']; //parsear la variable id a numero entero
 
         //preguntamos si existe el id enviado via GET en la tabla regiones
-        $res = $mbd->prepare("SELECT i.id, i.titulo, i.imagen, i.descripcion, i.activo, i.portada, i.created_at, i.updated_at, p.nombre as producto, m.nombre as marca FROM imagenes as i INNER JOIN productos as p ON i.producto_id = p.id INNER JOIN marcas as m ON p.marca_id = m.id WHERE i.id = ?");
+        $res = $mbd->prepare("SELECT i.id, i.titulo, i.imagen, i.descripcion, i.activo, i.portada, i.producto_id, i.created_at, i.updated_at, p.nombre as producto, m.nombre as marca FROM imagenes as i INNER JOIN productos as p ON i.producto_id = p.id INNER JOIN marcas as m ON p.marca_id = m.id WHERE i.id = ?");
         $res->bindParam(1, $id);
         $res->execute();
         $imagen = $res->fetch();
@@ -115,7 +115,7 @@
                     </tr>
                 </table>
                 <p>
-                    <a href="index.php" class="btn btn-link">Volver</a>
+                    <a href="../productos/showImages.php?id_producto=<?php echo $imagen['producto_id']; ?>" class="btn btn-link">Volver</a>
                     <?php if($_SESSION['usuario_rol'] == 3): ?>
                         <a href="edit.php?id=<?php echo $imagen['id']; ?>" class="btn btn-primary">Editar</a>
                         
