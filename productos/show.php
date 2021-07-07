@@ -140,7 +140,7 @@
             <?php endif; ?>
            
         </div>
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-10 offset-md-1">
             <h4 class="text-center mt-3 text-primary">Atributos de <?php echo $producto['nombre']; ?></h4>
             <table class="table table-hover">
                 <tr>

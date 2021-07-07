@@ -57,6 +57,9 @@
                         <p class="h5 text-primary">
                             <?php echo $producto['tipo']; ?>
                         </p>
+                        <p>
+                            <a href="<?php echo PRODUCTOS . 'cotizar.php?id=' . $producto['id']; ?>" class="btn btn-secondary">Cotizar</a>
+                        </p>
                     </div>
                     
                 <?php endforeach; ?>

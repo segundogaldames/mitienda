@@ -70,6 +70,11 @@
                         </ul>
                     </div>
                 <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="<?php echo BASE_URL . 'img/carrito.png' ?>" alt="" width="25" height="17">
+                    </a>
+                </li>
             </ul>
             <!-- formulario del buscador -->
             <form class="d-flex">
