@@ -6,6 +6,8 @@
     error_reporting(E_ALL);
 
     session_start();
+
+    //print_r($_SESSION);
     
     require('class/conexion.php');
     require('class/rutas.php');
@@ -40,6 +42,7 @@
 
         <!-- seccion de contenido principal -->
         <section>
+            <?php include('partials/mensajes.php'); ?>
 
             <div class="row">
                 <?php foreach($productos as $producto): ?>

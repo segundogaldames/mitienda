@@ -16,10 +16,12 @@
         $id = (int) $_GET['id']; //parsear la variable id a numero entero
 
         //preguntamos si existe el id enviado via GET en la tabla productos
-        $res = $mbd->prepare("SELECT p.id, p.sku, p.nombre, p.precio, p.activo, p.created_at, p.updated_at, m.nombre as marca, tp.nombre as tipo FROM productos p INNER JOIN marcas m ON p.marca_id = m.id INNER JOIN producto_tipos tp ON p.producto_tipo_id = tp.id WHERE p.id = ?");
+        $res = $mbd->prepare("SELECT p.id, p.sku, p.nombre, p.precio, m.nombre as marca, tp.nombre as tipo FROM productos p INNER JOIN marcas m ON p.marca_id = m.id INNER JOIN producto_tipos tp ON p.producto_tipo_id = tp.id WHERE p.id = ?");
         $res->bindParam(1, $id);
         $res->execute();
         $producto = $res->fetch();
+
+        //print_r($producto);exit;
 
         //lista de atributos de este producto
         $res = $mbd->prepare("SELECT ap.id, a.nombre, ap.valor FROM atributos a INNER JOIN atributo_producto ap ON a.id = ap.atributo_id WHERE ap.producto_id = ?");
@@ -36,16 +38,38 @@
 
         if (isset($_POST['confirm']) && $_POST['confirm'] == 1) {
             if (isset($_SESSION['autenticado'])) {
-                $producto = (int) $_POST['producto'];
+                $prod = (int) $_POST['producto'];
                 $cantidad = filter_var($_POST['cantidad'], FILTER_VALIDATE_INT);
 
-                if (!$cantidad) {
-                    $msg = 'Ingrese una cantidad';
+                if (!$cantidad || $cantidad <= 0) {
+                    $msg = 'Ingrese una cantidad válida';
                 }else {
-                    //generar el carro de compra
-                    //$_SESSION['id'] = $_SESSION['usuario_id'];
-                    $_SESSION['producto'] = $id;
-                    $_SESSION['cantidad'] = $cantidad;
+                    //verificar que el usuario no tenga ya cotizado un mismo producto
+                    $res = $mbd->prepare("SELECT id FROM carro_compras WHERE producto_id = ? AND usuario_id = ?");
+                    $res->bindParam(1, $prod);
+                    $res->bindParam(2, $_SESSION['usuario_id']);
+                    $res->execute();
+
+                    $compra = $res->fetch();
+
+                    if($compra){
+                        $msg = 'Este producto ya ha sido cotizado por usted... intente con otro';
+                    }else{
+                        //registramos la cotizacion
+                        //estados: 1 => pendiente, 2 => confirmado
+                        $res = $mbd->prepare("INSERT INTO carro_compras(producto_id, usuario_id, cantidad, estado, created_at, updated_at) VALUES(?, ?, ?, 1, now(), now() ) ");
+                        $res->bindParam(1, $prod);
+                        $res->bindParam(2, $_SESSION['usuario_id']);
+                        $res->bindParam(3, $cantidad);
+                        $res->execute();
+
+                        $row = $res->rowCount();
+
+                        if ($row) {
+                            $_SESSION['success'] = 'El producto fue agregado correctamente';
+                            header('Location: ' . BASE_URL);
+                        }
+                    }
                 }       
             }else{
                 $msg = 'Debes iniciar sesion o registrarte para continuar';
@@ -84,11 +108,9 @@
     <div class="container">
         <div class="col-md-10 offset-md-1">
             <h2 class="text-center mt-3 text-primary">Cotizar</h2>
-            <!-- generacion de mensaje de exito -->
-            <?php include('../partials/mensajes.php'); ?>
 
             <!-- validar que el producto existe     -->
-            <?php if($producto): ?>
+            <?php if(!empty($producto)): ?>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="row">
@@ -133,7 +155,7 @@
                         <div class="form-group mb-2">
                             <input type="hidden" name="producto" value="<?php echo $producto['id']; ?>">
                             <input type="hidden" name="confirm" value="1">
-                            <input type="number" class="" name="cantidad"> 
+                            <input type="number" class="" name="cantidad" value="1"> 
                             <button type="submit" class="btn btn-success btn-sm">Agregar</button>
                         </div>
                     </form>
