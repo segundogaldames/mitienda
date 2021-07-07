@@ -73,7 +73,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo CARRO_COMPRAS . 'show.php'; ?>">
                         <img src="<?php echo BASE_URL . 'img/carrito.png' ?>" alt="" width="25" height="17">
-                        <span class="text-danger"><?php if(isset($_SESSION['count'])) echo $_SESSION['count']; ?></span>
                     </a>
                 </li>
             </ul>

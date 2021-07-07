@@ -52,6 +52,7 @@
                         <th>Cantidad</th>
                         <th>Precio</th>
                         <th>A Pagar</th>
+                        <th></th>
                     </tr>
                     <?php foreach($compras as $compra): ?>
                         <tr>
@@ -61,25 +62,26 @@
                             <td class="text-end">
                                 <?php
                                     $pago = $compra['cantidad'] * $compra['precio'];
-                                    $count = $count + $compra['cantidad'];
                                     $total = $total + $pago;
                                     echo '$ ' . number_format($pago,0,',','.');
                                 ?>
                             </td>
+                            <td>
+                                <a href="<?php echo CARRO_COMPRAS . 'delete.php?id=' . $compra['id']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     <tr>
-                        <td colspan="3" class="text-center strong">Total</td>
-                        <td class="text-end">$ 
+                        <th colspan="3" class="text-center strong">Total</th>
+                        <th class="text-end">$ 
                         <?php 
-                            $_SESSION['count'] = $count;
                             echo number_format($total,0,',','.'); 
                         ?>
-                        </td>
+                        </th>
                     </tr>
                 </table>
-                <p>
-                    <a href="<?php echo BASE_URL; ?>" class="btn btn-link">Seguir Comprando</a>
+                <p class="text-center">
+                    <a href="<?php echo BASE_URL; ?>" class="btn btn-primary">Seguir Comprando</a>
                     <a href="#" class="btn btn-success">Pagar</a>
                     <a href="#" class="btn btn-warning">Cancelar</a>
                 </p>
