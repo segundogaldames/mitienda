@@ -22,6 +22,19 @@ if(isset($_SESSION['autenticado'])){
             $row = $res->rowCount();
 
             if ($row) {
+                //verificar si queda algun otro producto en el carro del usuario
+                $res = $mbd->prepare("SELECT id FROM carro_compras WHERE usuario_id = ?");
+                $res->bindParam(1, $_SESSION['usuario_id']);
+                $res->execute();
+
+                $compra = $res->fetchall();
+
+                //print_r($compra);exit;
+                
+                if (!$compra) {
+                    unset($_SESSION['compra']);
+                }
+                
                 $_SESSION['success'] = 'El producto se ha eliminado correctamente';
                 header('Location: ' . CARRO_COMPRAS . 'show.php');
             }

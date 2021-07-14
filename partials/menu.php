@@ -70,11 +70,13 @@
                         </ul>
                     </div>
                 <?php endif; ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo CARRO_COMPRAS . 'show.php'; ?>">
-                        <img src="<?php echo BASE_URL . 'img/carrito.png' ?>" alt="" width="25" height="17">
-                    </a>
-                </li>
+                <?php if(isset($_SESSION['compra'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo CARRO_COMPRAS . 'show.php'; ?>">
+                            <img src="<?php echo BASE_URL . 'img/carrito.png' ?>" alt="" width="25" height="17">
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
             <!-- formulario del buscador -->
             <form class="d-flex">

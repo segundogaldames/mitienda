@@ -66,6 +66,7 @@
                         $row = $res->rowCount();
 
                         if ($row) {
+                            $_SESSION['compra'] = true;
                             $_SESSION['success'] = 'El producto fue agregado correctamente';
                             header('Location: ' . BASE_URL);
                         }

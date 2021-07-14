@@ -31,6 +31,7 @@
     <title>Carro de Compra</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="../js/funciones.js"></script>
 </head>
 <body>
     <header>
@@ -67,7 +68,7 @@
                                 ?>
                             </td>
                             <td>
-                                <a href="<?php echo CARRO_COMPRAS . 'delete.php?id=' . $compra['id']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                                <a href="javascript:void();" class="btn btn-danger btn-sm" onclick="eliminar('<?php echo $compra['id'] ?>');">Eliminar</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -83,7 +84,7 @@
                 <p class="text-center">
                     <a href="<?php echo BASE_URL; ?>" class="btn btn-primary">Seguir Comprando</a>
                     <a href="#" class="btn btn-success">Pagar</a>
-                    <a href="#" class="btn btn-warning">Cancelar</a>
+                    <a href="javascript:void()" class="btn btn-warning" onclick="alertar();">Cancelar Compra</a>
                 </p>
             <?php else: ?>
                 
