@@ -16,6 +16,14 @@
     $res = $mbd->query("SELECT i.imagen, p.id, p.nombre, p.precio, m.nombre as marca, tp.nombre as tipo FROM imagenes i INNER JOIN productos p ON i.producto_id = p.id INNER JOIN marcas m ON p.marca_id = m.id INNER JOIN producto_tipos tp ON p.producto_tipo_id = tp.id WHERE i.activo = 1 AND i.portada = 1 AND p.activo = 1 ORDER BY p.precio");
     $productos = $res->fetchall();
 
+    //lista de marcas
+    $res = $mbd->query("SELECT id, nombre FROM marcas ORDER BY nombre");
+    $marcas = $res->fetchall();
+
+    //lista de tipos
+    $res = $mbd->query("SELECT id, nombre FROM producto_tipos ORDER BY nombre");
+    $tipos = $res->fetchall();
+
     //print_r($productos);exit;
 ?>
 <!DOCTYPE html>
@@ -43,31 +51,55 @@
         <!-- seccion de contenido principal -->
         <section>
             <?php include('partials/mensajes.php'); ?>
-
+            
             <div class="row">
-                <?php foreach($productos as $producto): ?>
-                    <div class="col-md-2 text-center m-2">
-                        <p class="h6 text-primary">
-                            <?php echo $producto['nombre']; ?>
-                        </p>
-                        <img src="<?php echo PRODUCTOS . 'img/' . $producto['imagen']; ?>" alt="" width="190" height="120">
-                        <p class="h4 text-primary mt-2">
-                            $ <?php echo number_format($producto['precio'],0,',','.'); ?>
-                        </p>
-                        <p class="h5 text-primary">
-                            <?php echo $producto['marca']; ?>
-                        </p>
-                        <p class="h5 text-primary">
-                            <?php echo $producto['tipo']; ?>
-                        </p>
-                        <p>
-                            <a href="<?php echo PRODUCTOS . 'cotizar.php?id=' . $producto['id']; ?>" class="btn btn-secondary">Cotizar</a>
-                        </p>
+                <div class="col-md-3">
+                    <h5 class="text-info">Marcas</h5>
+                    <div class="list-group">
+                        <?php foreach($marcas as $marca): ?>
+                            <a href="<?php echo PRODUCTOS . 'productoMarcas.php?marca=' . $marca['id']; ?>" class="list-group-item list-group-item-action">
+                                <?php echo $marca['nombre']; ?>
+                            </a>
+                        <?php endforeach; ?>
                     </div>
-                    
-                <?php endforeach; ?>
+                    <hr class="text-info">
+                    <h5 class="text-info">Categorías</h5>
+                    <div class="list-group">
+                        <?php foreach($tipos as $tipo): ?>
+                            <a href="<?php echo PRODUCTOS . 'productoTipos.php?tipo=' . $tipo['id']; ?>" class="list-group-item list-group-item-action">
+                                <?php echo $tipo['nombre']; ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <?php foreach($productos as $producto): ?>
+                            <div class="col-md-3 text-center m-2">
+                                <p class="h6 text-primary">
+                                    <?php echo $producto['nombre']; ?>
+                                </p>
+                                <img src="<?php echo PRODUCTOS . 'img/' . $producto['imagen']; ?>" alt="" width="190" height="120">
+                                <p class="h4 text-primary mt-2">
+                                    $ <?php echo number_format($producto['precio'],0,',','.'); ?>
+                                </p>
+                                <p class="h5 text-primary">
+                                    <?php echo $producto['marca']; ?>
+                                </p>
+                                <p class="h5 text-primary">
+                                    <?php echo $producto['tipo']; ?>
+                                </p>
+                                <p>
+                                    <a href="<?php echo PRODUCTOS . 'cotizar.php?id=' . $producto['id']; ?>" class="btn btn-secondary">Cotizar</a>
+                                </p>
+                            </div>
+                            
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                
             </div>
-
+            
         </section>
 
         <!-- pie de pagina -->
